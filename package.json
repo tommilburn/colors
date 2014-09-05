@@ -1,0 +1,23 @@
+{
+  "name": "Colors",
+  "version": "0.0.0",
+  "description": "Dan Deacon-inspired browser color flashing controlled by Max for Live",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tommilburn/colors.git"
+  },
+  "author": "Tom Milburn",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/tommilburn/colors/issues"
+  },
+  "dependencies": {
+    "socket.io": "~1.1.0",
+    "colors": "~0.6.2",
+    "express": "~4.8.8"
+  }
+}
