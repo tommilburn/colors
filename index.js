@@ -1,19 +1,26 @@
-var express = require('express');
-var app = express();
-var http = require('http').Server(app);
-var socket = require('socket.io');
-var io = socket(http);
+var app = require('http').createServer(handler);
+var io = require('socket.io')(4001);
+var fs = require('fs');
 var dgram = require('dgram');
 var udp = dgram.createSocket('udp4');
+var randomcolor = require('randomcolor');
 
-app.get('/', function(req, res){
-	res.sendFile(__dirname + '/colors.html');
-});
+app.listen(4000);
+
+function handler (req, res) {
+	fs.readFile(__dirname + '/colors.html', 
+	function (err, data) {
+		if (err) {
+			res.writeHead(500);
+			return res.end('Error loading colors.html');
+		}
+		res.writeHead(200);
+		res.end(data);
+	});
+}
+
 io.on('connection', function(socket){
 	console.log('a user connected');
-});
-http.listen(3000, function(){
-	console.log('listening on 3000');
 });
 
 process.stdin.resume();
@@ -26,6 +33,7 @@ udp.on('error', function(err){
 
 udp.on("message", function(msg, rinfo){
 	console.log("server got " + msg + " from " + rinfo.address + ":" + rinfo.port);
+	io.sockets.emit("color", {color: randomcolor.randomColor()});
 });
 
 udp.on('listening', function () {

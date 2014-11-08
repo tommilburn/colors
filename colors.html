@@ -3,18 +3,36 @@
 		<title>tommilburn live colors</title>
 		<style>
 			body{
-				background-color: red;
+				background-color: black;
+				font-family: Arial;
+				color: #fff;
+			}
+			.container{
+				width: 50%;
+				max-width: 33em;
+				margin: 5em auto;
+				text-align: center;
 			}
 		</style>
 	</head>
 	<body>
-		<h1>hello world<h1>
-		<script src="/socket.io/socket.io.js"></script>
+		<div class="container">
+			<h2 class="header">If I'm preforming live, this page will flash specific colors in sync with the music!</h2>
+		</div>
+		<!-- using the full URL  until nginx and socket.io play nicely -->
+		<script src="http://thomasmilburn.com:4001/socket.io/socket.io.js"></script>
+
 		<script>
-			var socket = io();
+			var started = false;
+			var socket = io("http://thomasmilburn.com:4001");
 			socket.on('color', function(data){
-				console.log(data);
-				document.body.style.background = data.color;
+				if(started){ //flash a new color
+					document.body.style.background = data.color;
+				} else { //first data when connecting, need to hide header text
+					started = true;
+					document.getElementsByClassName('header')[0].style.display = 'none';	
+					document.body.style.background = data.color;
+				}
 			});
 		</script>
 	</body>
